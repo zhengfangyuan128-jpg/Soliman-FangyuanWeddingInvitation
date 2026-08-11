@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SolimanFionaWedding</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #000000;
+        }
+        /* 开场遮罩 */
+        .start-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.65);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .start-text {
+            color: #ffffff;
+            font-size: 22px;
+            letter-spacing: 3px;
+            font-family: serif;
+            text-shadow: 0 0 8px #e8d8ff, 0 0 16px #c8b0e8, 0 0 24px #b090d8;
+            animation: dreamBreath 3.2s ease-in-out infinite alternate;
+        }
+        @keyframes dreamBreath {
+            0% {
+                opacity: 0.75;
+                text-shadow: 0 0 4px #e8d8ff, 0 0 10px #c8b0e8, 0 0 16px #b090d8;
+            }
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 12px #f0e4ff, 0 0 22px #d4bcf0, 0 0 32px #bc9ee0;
+            }
+        }
+
+        .video-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+        .invite-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 倒计时：Save the Date下方，上移后位置 */
+        .countdown-wrap{
+            position:absolute;
+            top:26vh;
+            left:50%;
+            transform: translateX(-50%);
+            z-index:955;
+            width:280px;
+            height:120px;
+            opacity:0;
+            pointer-events:none;
+            transition: opacity 0.4s ease;
+        }
+        .countdown-wrap.show{
+            opacity:1;
+            pointer-events:auto;
+        }
+
+        /* RSVP：#d0b3b2底色、黑色文字，放在粉色内框上半区 */
+        .click-link-btn{
+            position:absolute;
+            top:44vh;
+            left:50%;
+            transform: translateX(-50%);
+            z-index:960;
+            width:260px;
+            height:90px;
+            background:#d0b3b2;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:#000000;
+            font-size:20px;
+            font-weight:500;
+            text-decoration:none;
+            opacity:0;
+            pointer-events:none;
+            transition: opacity 0.4s ease;
+        }
+        .click-link-btn.show{
+            opacity:1;
+            pointer-events:auto;
+        }
+
+        .bgm-player {
+            position: fixed;
+            bottom: 16px;
+            left: 16px;
+            width: 72px;
+            height: 34px;
+            z-index: 999;
+            opacity: 0.7;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="start-overlay" id="overlay">
+        <div class="start-text">Click to Open Your Invitation</div>
+    </div>
+
+    <div class="video-container" id="videoWrap">
+        <video class="invite-video" muted loop playsinline id="inviteVideo">
+            <source src="./SolimanFionaWedding.mp4" type="video/mp4">
+        </video>
+
+        <!-- TickCounter倒计时iframe，位于Save the Date下方 -->
+        <div class="countdown-wrap" id="countBox">
+            <iframe src="https://www.tickcounter.com/countdown/11129451/my-countdown" width="280" height="120" frameborder="0"></iframe>
+        </div>
+
+        <!-- RSVP按钮 -->
+        <a id="rsvpBtn" class="click-link-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeSToEOGgadSOi62ek_c9hjiqe9O1V5VI5F-3Z2blMD-ur07A/viewform?usp=header" target="_blank">RSVP</a>
+    </div>
+
+    <audio class="bgm-player" controls preload="auto" loop>
+        <source src="./A.mp3" type="audio/mpeg">
+    
+
+    <script>
+        const audio = document.querySelector('.bgm-player');
+        const overlay = document.getElementById('overlay');
+        const video = document.getElementById('inviteVideo');
+        const rsvpBtn = document.getElementById('rsvpBtn');
+        const countBox = document.getElementById('countBox');
+
+        const showCountTime = 15;
+        const hideCountTime = 20;
+        const showRsvpTime = 20;
+        let videoReady = false;
+
+        // ✅保护条件1：等待视频元数据加载完成后，才开启时间判断
+        video.addEventListener('loadedmetadata', function(){
+            videoReady = true;
+        });
+
+        overlay.addEventListener('click', ()=>{
+            overlay.style.display = 'none';
+            video.play();
+            if(audio.paused) audio.play();
+        });
+
+        video.addEventListener('timeupdate', ()=>{
+            // ✅保护条件2：双重锁，视频未加载完成直接跳过逻辑，防止初始闪现
+            if(!videoReady) return;
+
+            // 倒计时：15 ≤ 时间 <20 才显示
+            if(video.currentTime >= showCountTime && video.currentTime < hideCountTime){
+                countBox.classList.add('show');
+            }else{
+                countBox.classList.remove('show');
+            }
+            // RSVP：≥20s 显示
+            if(video.currentTime >= showRsvpTime){
+                rsvpBtn.classList.add('show');
+            }else{
+                rsvpBtn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
