@@ -60,11 +60,11 @@
             display: block;
         }
 
-        /* 倒计时：Save the Date下方，上移后位置 */
+        /* 倒计时：字号缩小、右移3字符宽度 */
         .countdown-wrap{
             position:absolute;
             top:26vh;
-            left:50%;
+            left:calc(50% + 3ch); /* 向右偏移3个字符宽度 */
             transform: translateX(-50%);
             z-index:955;
             width:280px;
@@ -76,6 +76,10 @@
         .countdown-wrap.show{
             opacity:1;
             pointer-events:auto;
+        }
+        .countdown-wrap iframe {
+            transform: scale(0.82); /* 整体缩小等效3个字号 */
+            transform-origin: center center;
         }
 
         /* RSVP：#d0b3b2底色、黑色文字，放在粉色内框上半区 */
