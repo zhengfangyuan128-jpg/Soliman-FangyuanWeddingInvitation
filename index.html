@@ -82,7 +82,7 @@
             transform-origin: center center;
         }
 
-        /* RSVP：#d0b3b2底色、黑色文字，放在粉色内框上半区 */
+        /* RSVP：#d0b3b2底色、黑色文字，放在粉色内框上半区 + CTA图标布局 */
         .click-link-btn{
             position:absolute;
             top:44vh;
@@ -96,6 +96,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
+            gap:10px; /* 图标和文字间距 */
             color:#000000;
             font-size:20px;
             font-weight:500;
@@ -107,6 +108,9 @@
         .click-link-btn.show{
             opacity:1;
             pointer-events:auto;
+        }
+        .cta-icon{
+            font-size:22px;
         }
 
         .bgm-player {
@@ -136,8 +140,11 @@
             <iframe src="https://www.tickcounter.com/countdown/11129451/my-countdown" width="280" height="120" frameborder="0"></iframe>
         </div>
 
-        <!-- RSVP按钮 -->
-        <a id="rsvpBtn" class="click-link-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeSToEOGgadSOi62ek_c9hjiqe9O1V5VI5F-3Z2blMD-ur07A/viewform?usp=header" target="_blank">RSVP</a>
+        <!-- RSVP按钮，增加CTA箭头图标 ▸ -->
+        <a id="rsvpBtn" class="click-link-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSeSToEOGgadSOi62ek_c9hjiqe9O1V5VI5F-3Z2blMD-ur07A/viewform?usp=header" target="_blank">
+            <span class="cta-icon">▸</span>
+            RSVP
+        </a>
     </div>
 
     <audio class="bgm-player" controls preload="auto" loop>
